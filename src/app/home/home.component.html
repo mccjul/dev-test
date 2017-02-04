@@ -1,0 +1,46 @@
+<div *ngIf="auth.authenticated()">
+  <div class="card" *ngIf="isLoading">
+    <h4 class="card-header">Loading...</h4>
+    <div class="card-block text-xs-center">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+    </div>
+  </div>
+
+  <app-toast [message]="toast.message"></app-toast>
+
+  <div class="card" *ngIf="!isLoading">
+    <h4 class="card-header">Files</h4>
+    <div class="card-block">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-default">
+          <tr>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="files.length === 0">
+          <tr>
+            <td colspan="4">There are no files in the DB. Add a new file below.</td>
+          </tr>  
+        </tbody>
+        <tbody *ngIf="!isEditing">
+          <tr *ngFor="let file of files">
+            <td>{{file.filename}}</td>
+            <td>
+              <button class="btn btn-sm btn-success" (click)="download(file._id)" ><i class="fa fa-download"></i> Download</button>
+            </td>
+          </tr>  
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 class="card-header">Add new file</h4>
+    <div class="card-block">
+      
+        <input type="file" (change)="onChange($event)" accept="application/pdf"/>
+        <button class="btn btn-primary" (click)="UploadFile()" [disabled]="!filePresent"><i class="fa fa-floppy-o"></i> Upload</button>
+    </div>
+  </div>
+</div>
