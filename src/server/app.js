@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var config = require('./config');
 var multer  = require('multer')
-var upload = multer({ dest: 'tmp/' });
+var upload = multer({ dest: 'src/server/tmp/' });
 
 var app = express();
 app.set('port', (process.env.PORT || 3000));
@@ -46,7 +46,6 @@ db.once('open', function() {
         tmp.metadata = docs[i].metadata;
         tmps.push(tmp);
       }
-      console.log(tmps);
       res.json(tmps);
     });
 	});
@@ -55,7 +54,7 @@ db.once('open', function() {
 		var pdf = new Pdf({
       filename: req.file.originalname,
   		contentType: 'application/pdf',
-      metadata:  {}
+      metadata:  { path: req.file.filename }
 		});
     
 		pdf.write(
@@ -68,11 +67,14 @@ db.once('open', function() {
 	});
 
 	app.get('/pdf/download/:id', jwtCheck, (req, res) => {
-		Pdf.readById(req.params.id, (err, data) => {
-      if(err) return res.status(500).send({ error: err });
-      res.type('application/pdf');
-      
-      res.status(200).send(data);
+    // I couldn't get gridfs to function
+		// Pdf.readById(req.params.id, (err, data) => {
+    //   if(err) return res.status(500).send({ error: err });
+    //   res.status(200).send(data);
+    // });
+    Pdf.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, function(err, doc) {
+      if(err) return console.error(err);
+      res.status(200).sendFile(__dirname + '/tmp/' + doc.metadata.path);
     });
 	});
 

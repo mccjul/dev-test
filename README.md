@@ -8,7 +8,7 @@ This Stack is a simple Typescript, Angular2, Auth0 -> express, mongo-gridfs
 I have thoughts on your Authentication system as I was building this. As you can see in auth.service you can get permissions implanted into the component itself from the object given by auth0.
 In comments I have it as an object literal which made me think that this could be a check done with webtask.io for quick checks of permission on route components. This webtask.io check could query auth0
 and we wouldn't have to worry about updating/syncing our database to user authentication roles. Whats cool about that idea is that you can do the check in that spot in the auth.service file and keep your api focused on
-providing information for your server and if the data requires permissions to access I would recommend a simple permission relation table which then again that mini webtask service could come in handy (aka no need to pollute your params)
+providing information for your server and if the data requires permissions to access I would recommend a simple permission relation table which then again that mini webtask service could come in handy (aka no need to pollute your params or body)
 
 The fun thing is you can inject authentication checks as either *ngIf's if there are specific components you wish to be hidden or shown based on permissions or the authentication checks can be route based or even better a mix.
 
@@ -19,7 +19,7 @@ I have disabled the multiauth for administrators because the only admin currentl
 
 #Requirements
 1. `npm i angular-cli -g`
-1. `npm i`
+2. `npm i`
 
 ## Run 
 1. Terminal window 1: `mongod`: run MongoDB
@@ -29,5 +29,7 @@ I have disabled the multiauth for administrators because the only admin currentl
 
 ## Docker
 // For some reason my server can't access the mongo db the way I had it. So currently the image doesn't work
+
 1. Create Mongo container: `docker run --name db -d mongo`
+
 2. Create app container: `docker-compose up`

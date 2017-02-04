@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
     this.dataService.downloadFile(id).subscribe(
       data => {
         console.log(data);
-        const blob = new Blob([data['_body']], { type: 'application/pdf' });
+        const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
       },
