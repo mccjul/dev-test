@@ -68,13 +68,9 @@ db.once('open', function() {
 
 	app.get('/pdf/download/:id', jwtCheck, (req, res) => {
     // I couldn't get gridfs to function
-		// Pdf.readById(req.params.id, (err, data) => {
-    //   if(err) return res.status(500).send({ error: err });
-    //   res.status(200).send(data);
-    // });
-    Pdf.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, function(err, doc) {
-      if(err) return console.error(err);
-      res.status(200).sendFile(__dirname + '/tmp/' + doc.metadata.path);
+		Pdf.readById(req.params.id, (err, data) => {
+      if(err) return res.status(500).send({ error: err });
+      res.status(200).send(data);
     });
 	});
 
