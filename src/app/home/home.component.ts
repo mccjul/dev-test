@@ -30,25 +30,21 @@ export class HomeComponent implements OnInit {
 
   getFiles() {
     this.dataService.getFiles().subscribe(
-      data => {
-        // TO add permission to file
-        this.files = data;
-        for (let i = 0; i < this.files.length; i++) {
-          if (i === 1) {
-            this.files[0].permission = 'admin';
-          }
-          this.files[1].permission = '';
-        }
-      },
+      data => this.files = data,
       error => console.log(error),
       () => this.isLoading = false
     );
   }
 
   UploadFile() {
-    this.dataService.uploadFile(this.fileToUpload);
-    this.getFiles();
-    this.toast.setMessage('item uploaded successfully.', 'success');
+    this.dataService.uploadFile(this.fileToUpload).subscribe(
+      data => console.log(data),
+      error => console.log(error),
+      () => {
+        this.toast.setMessage('item uploaded successfully.', 'success');
+        this.getFiles();
+      }
+    );
   }
 
   download(id) {

@@ -5,7 +5,7 @@ var morgan = require('morgan'); // logger
 var bodyParser = require('body-parser');
 var jwt = require('express-jwt');
 var config = require('./config');
-var multer  = require('multer')
+var multer  = require('multer');
 var upload = multer({ dest: 'src/server/tmp/' });
 
 var app = express();
@@ -43,7 +43,7 @@ db.once('open', function() {
       for(var i = 0, tmps = [], tmp = {}; i < docs.length; i++){
         tmp._id = docs[i]._id.toString();
         tmp.filename = docs[i].filename;
-        tmp.metadata = docs[i].metadata;
+        tmp.metadata = i === 0 ? { permission: 'admin' } : { permission: 'admin' };
         tmps.push(tmp);
       }
       res.json(tmps);
@@ -54,7 +54,7 @@ db.once('open', function() {
 		var pdf = new Pdf({
       filename: req.file.originalname,
   		contentType: 'application/pdf',
-      metadata:  { path: req.file.filename }
+      metadata:  {}
 		});
     
 		pdf.write(
