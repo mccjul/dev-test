@@ -23,10 +23,10 @@ export class DataService {
       xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
               if (xhr.status === 200) {
-                observer.onNext(JSON.parse(xhr.response));
-                observer.onCompleted();
+                observer.next();
+                observer.complete();
               } else {
-                observer.onError(xhr.response);
+                observer.error(xhr.response);
               }
           }
       };
@@ -36,6 +36,8 @@ export class DataService {
   }
 
   downloadFile(id): Observable<any> {
-    return this.authHttp.get('/pdf/download/' + id);
+    const headers = new Headers({responseType: 'arraybuffer'});
+    const options = new RequestOptions(headers);
+    return this.authHttp.get('/pdf/download/' + id, options);
   }
 }
