@@ -41,13 +41,13 @@ export class Auth {
     return tokenNotExpired();
   };
 
-  public isProperPermission(permission: String) {
-    return permission === '' || this.userProfile.app_metadata.roles.indexOf(permission) > -1;
+  public isProperPermission(permission: String): boolean {
+    return permission === '' || this.userProfile.app_metadata.authorization.roles.indexOf(permission) != -1;
 
       // var Permission = {
       //   admin: (role) => ['admin', ''].indexOf(role) > -1,
       //   undefined: (role) => [''].indexOf(role) > -1
-      // }[this.userProfile.app_metadata.roles](permission);
+      // }[this.userProfile.app_metadata.authorization.roles](permission);
   }
 
   public logout() {

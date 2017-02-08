@@ -27,7 +27,7 @@
           <tr *ngFor="let file of files">
             <td>{{file.filename}}</td>
             <td>
-              <button class="btn btn-sm btn-success" (click)="download(file._id)" ><i class="fa fa-download"></i> Download</button>
+              <button class="btn btn-sm btn-success" (click)="download(file._id)" [disabled]="!auth.isProperPermission(file.metadata.permission)"><i class="fa fa-download"></i> Download</button>
             </td>
           </tr>  
         </tbody>

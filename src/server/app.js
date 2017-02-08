@@ -40,13 +40,11 @@ db.once('open', function() {
   app.get('/pdfs', jwtCheck, (req, res) => {
 		Pdf.find(function(err, docs) {
       if(err) return console.error(err);
-      for(var i = 0, tmps = [], tmp = {}; i < docs.length; i++){
-        tmp._id = docs[i]._id.toString();
-        tmp.filename = docs[i].filename;
-        tmp.metadata = i === 0 ? { permission: 'admin' } : { permission: 'admin' };
-        tmps.push(tmp);
+      docs[0].metadata = { permission: 'Admin' };
+      for(var i = 1; i < docs.length; i++){
+        docs[i].metadata = { permission: '' };
       }
-      res.json(tmps);
+      res.json(docs);
     });
 	});
 
@@ -54,14 +52,14 @@ db.once('open', function() {
 		var pdf = new Pdf({
       filename: req.file.originalname,
   		contentType: 'application/pdf',
-      metadata:  {}
+      metadata: { permission: '' }
 		});
     
 		pdf.write(
   		fs.createReadStream(req.file.path), 
 			(err, done) => {
 				if(err) res.send(500, { error: err });
-        res.sendStatus(200);
+        res.sendStatus(200); // Send filename, metadata, id
 			}
 		);
 	});
