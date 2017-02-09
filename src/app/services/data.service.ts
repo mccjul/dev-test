@@ -17,7 +17,7 @@ export class DataService {
 
   uploadFile(files): Observable<any> {
     return Observable.create((observer) => {
-      const formData: any = new FormData();
+      const formData = new FormData();
       const xhr = new XMLHttpRequest();
       formData.append('upload', files[0], files[0].name);
       xhr.onreadystatechange = function () {
@@ -35,8 +35,6 @@ export class DataService {
   }
 
   downloadFile(id): Observable<any> {
-    const headers = new Headers({responseType: 'arraybuffer'});
-    const options = new RequestOptions(headers);
-    return this.authHttp.get('/pdf/download/' + id, options);
+    return this.authHttp.get('/pdf/download/' + id);
   }
 }

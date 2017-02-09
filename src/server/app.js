@@ -66,10 +66,12 @@ db.once('open', function() {
 
 	app.get('/pdf/download/:id', jwtCheck, (req, res) => {
     // I couldn't get gridfs to function
-		Pdf.readById(req.params.id, (err, data) => {
-      if(err) return res.status(500).send({ error: err });
-      res.status(200).send(data);
+    var stream = Pdf.readById(req.params.id);
+    res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=some_file.pdf'
     });
+    stream.pipe(res);
 	});
 
   // all other routes are handled by Angular
