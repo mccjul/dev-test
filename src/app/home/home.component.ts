@@ -31,14 +31,19 @@ export class HomeComponent implements OnInit {
   getFiles() {
     this.dataService.getFiles().subscribe(
       data => this.files = data,
-      error => console.log(error),
+      error => {
+        this.toast.setMessage('Something went wrong.', 'warning');
+      },
       () => this.isLoading = false
     );
   }
 
   UploadFile() {
     this.dataService.uploadFile(this.fileToUpload).subscribe(
-      error => console.log(error),
+      data => console.log(data),
+      error => {
+        this.toast.setMessage('Something went wrong.', 'warning');
+      },
       () => {
         this.toast.setMessage('item uploaded successfully.', 'success');
         this.getFiles();
@@ -48,6 +53,19 @@ export class HomeComponent implements OnInit {
 
   download(id) {
     this.dataService.downloadFile(id);
+  }
+
+  delete(id) {
+    this.dataService.deleteFile(id).subscribe(
+      data => {},
+      error => {
+        this.toast.setMessage('Something went wrong.', 'warning');
+      },
+      () => {
+        this.toast.setMessage('item deleted successfully.', 'success');
+        this.getFiles();
+      }
+    );
   }
 
   onChange(fileInput: any) {

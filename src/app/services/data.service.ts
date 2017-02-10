@@ -56,4 +56,8 @@ export class DataService {
     };
     xhr.send();
   }
+
+  deleteFile(id) {
+    return this.authHttp.delete('/pdf/' + id);
+  }
 }

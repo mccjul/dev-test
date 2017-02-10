@@ -66,13 +66,19 @@ db.once('open', function() {
 	});
 
 	app.get('/pdf/download/:id', (req, res) => {
-    // I couldn't get gridfs to function
     var stream = Pdf.readById(req.params.id);
     res.writeHead(200, {
         'Content-Type': 'arraybuffer'
     });
     stream.pipe(res);
 	});
+
+  app.delete('/pdf/:id', (req, res) => {
+    Pdf.unlinkById(req.params.id, function(error, unlinkedAttachment){
+        if(error) res.send(500, { error: err });
+        res.sendStatus(200);
+    });
+  });
 
   // all other routes are handled by Angular
   app.get('/*', function(req, res) {

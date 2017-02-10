@@ -28,6 +28,7 @@
             <td>{{file.filename}}</td>
             <td>
               <button class="btn btn-sm btn-success" (click)="download(file._id)" [disabled]="!auth.isProperPermission(file.metadata.permission)"><i class="fa fa-download"></i> Download</button>
+              <button class="btn btn-sm btn-danger" (click)="delete(file._id)">x</button>
             </td>
           </tr>  
         </tbody>
@@ -38,7 +39,6 @@
   <div class="card">
     <h4 class="card-header">Add new file</h4>
     <div class="card-block">
-      
         <input type="file" (change)="onChange($event)" accept="application/pdf"/>
         <button class="btn btn-primary" (click)="UploadFile()" [disabled]="!filePresent"><i class="fa fa-floppy-o"></i> Upload</button>
     </div>
