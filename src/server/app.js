@@ -60,6 +60,7 @@ db.once('open', function() {
 			(err, done) => {
 				if(err) res.send(500, { error: err });
         res.sendStatus(200);
+        fs.unlink(req.file.path, (err) => console.log(err));
 			}
 		);
 	});
