@@ -42,7 +42,7 @@ export class Auth {
   };
 
   public isProperPermission(permission: String): boolean {
-    return permission === '' || this.userProfile.app_metadata.authorization.roles.indexOf(permission) != -1;
+    return permission === '' || this.userProfile.app_metadata.authorization.roles.indexOf(permission) !== -1;
 
       // var Permission = {
       //   admin: (role) => ['admin', ''].indexOf(role) > -1,

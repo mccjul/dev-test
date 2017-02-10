@@ -47,17 +47,7 @@ export class HomeComponent implements OnInit {
   }
 
   download(id) {
-    this.dataService.downloadFile(id).subscribe(
-      data => {
-        console.log(data);
-        const blob = new Blob([data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-      },
-      error =>  {
-        this.toast.setMessage('error during download', 'warning');
-      }
-    );
+    this.dataService.downloadFile(id);
   }
 
   onChange(fileInput: any) {

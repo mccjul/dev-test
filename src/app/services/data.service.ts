@@ -30,11 +30,30 @@ export class DataService {
           }
       };
       xhr.open('POST', '/pdf/upload', true);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('id_token'));
       xhr.send(formData);
     });
   }
 
-  downloadFile(id): Observable<any> {
-    return this.authHttp.get('/pdf/download/' + id);
+  // downloadFile(id): Observable<any> {
+  //   const options = new RequestOptions(new Headers({ responseType: 'arraybuffer' }));
+  //   return this.authHttp.get('/pdf/download/' + id, options);
+  // }
+
+  downloadFile(id) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/pdf/download/' + id, true);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('id_token'));
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+      if (xhr.status === 200) {
+          const blob = new Blob([xhr.response], {type: 'application/pdf'});
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = 'Report_' + new Date() + '.pdf';
+          link.click();
+      }
+    };
+    xhr.send();
   }
 }

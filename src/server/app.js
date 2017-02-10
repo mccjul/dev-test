@@ -36,15 +36,15 @@ db.once('open', function() {
     model:'Pdf'
   });
   var Pdf = gridfs.model;
-  
-  app.get('/pdfs', jwtCheck, (req, res) => {
+  app.use(jwtCheck)
+  app.get('/pdfs', (req, res) => {
 		Pdf.find(function(err, docs) {
       if(err) return console.error(err);
       docs[0].metadata = { permission: 'Admin' };
       for(var i = 1; i < docs.length; i++){
         docs[i].metadata = { permission: '' };
       }
-      res.json(docs);
+      res.status(200).json(docs);
     });
 	});
 
@@ -59,17 +59,16 @@ db.once('open', function() {
   		fs.createReadStream(req.file.path), 
 			(err, done) => {
 				if(err) res.send(500, { error: err });
-        res.sendStatus(200); // Send filename, metadata, id
+        res.sendStatus(200);
 			}
 		);
 	});
 
-	app.get('/pdf/download/:id', jwtCheck, (req, res) => {
+	app.get('/pdf/download/:id', (req, res) => {
     // I couldn't get gridfs to function
     var stream = Pdf.readById(req.params.id);
     res.writeHead(200, {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=some_file.pdf'
+        'Content-Type': 'arraybuffer'
     });
     stream.pipe(res);
 	});
